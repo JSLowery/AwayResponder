@@ -60,17 +60,36 @@ function CheckTime(name, line, wildcards)
         CharName = gmcpdatacharstatus.name
   --print (diff)
   --print (diffmin)
+  if last_person == wildcards[1] then
+    return
+  end
+  last_person = wildcards[1]
+
   if (diffmin >=5) then
-    
-    Send("reply I am sorry "..wildcards[1].. ", "..CharName.." has not typed anything in ".. diffmin.." minutes. They are not here most likely.")
+    if math.floor(diffmin/60)==1 then
+      Send("reply I am sorry "..wildcards[1].. ", "..CharName.." has not typed anything in "..
+      math.floor(diffmin/60).." hour and ".. (diffmin-(math.floor(diffmin/60)*60))..
+      " minutes. They are not here most likely.")
+    elseif math.floor(diffmin/60)>1 then
+      Send("reply I am sorry "..wildcards[1].. ", "..CharName.." has not typed anything in "..
+      math.floor(diffmin/60).." hours and ".. (diffmin-(math.floor(diffmin/60)*60))..
+      " minutes. They are not here most likely.")
+    elseif math.floor(diffmin/60)==0 then
+      Send("reply I am sorry "..wildcards[1].. ", "..CharName.." has not typed anything in "..
+      (diffmin-(math.floor(diffmin/60)*60))..
+      " minutes. They are not here most likely.")
+    end
   end
   --print(diff)
 end
-function OnPluginCommand(bob) -- this doesn't work, its not in a plugin yet
+function OnPluginCommand(bob) 
+  if bob == "where1" or string.find(bob, "cast") or string.find(bob, "swho 12 area") or string.find(bob, "shadow")
+  or string.find(bob, 'sl') or string.find(bob, 'con all')
+  or string.find(bob, 'heighten') or string.find(bob, 'hide') or (string.find(bob, '\n') and bob:len() ==1) then return end
 time = os.time()
 
 --print (time)
- --print (bob)
+ print ('reset on',bob)
 end 
 
 function OnPluginInstall()
